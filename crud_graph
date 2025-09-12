@@ -1,0 +1,90 @@
+import networkx as nx
+import pandas as pd
+import ast
+import json
+
+# ======================SAVE THE GRAPH =====================================
+
+# REFERENCIA PARA GUARDAR GRAFO, ADMINISTRADOR
+def save_Graph(json_Graph) : # reference , json_Graph
+    # EL GRAFO JSON VIENE EN FORMATO STRING
+    with open('/home/EmilioRifasChidoPro/mysite/Graphs.json' , 'r') as file :
+        try :
+            data = json.load(file) # DATOS DEL JSON
+        except ValueError :
+            with open('/home/EmilioRifasChidoPro/mysite/Graphs.json' , 'a') as file :
+                json.dump({} , file , indent = 1) # LLENAR CON UN
+                file.close()                      # ELEMENTO VACIO
+        file.close()
+    with open('/home/EmilioRifasChidoPro/mysite/Graphs.json' , 'r') as file:
+        data = json.load(file) # LEER EL ARCHIVO JSON
+        file.close()
+    data[list(json_Graph.keys())[0]] = list(json_Graph.values())[0]
+    with open('/home/EmilioRifasChidoPro/mysite/Graphs.json' , 'w') as file :
+        json.dump(data , file , indent = 2) # REESCRIBIR EL ARCHIVO JSON
+        file.close()
+        return ({'status' : 'ok'})
+
+# ======================CREATE THE GRAPH ===================================
+
+# OBTENER NODOS Y ARISTAS
+def get_Nodes_Edges(id_list) :
+    node_list = []
+    edge_List = []
+    for i in id_list :
+        if '-' in i :
+            edge_List.append(i) # LISTA DE NODOS
+        else :
+            node_list.append(i) # LISTA DE ARISTAS
+    return {'node_list' : node_list ,
+            'edge_list' : edge_List}
+
+
+# CREAR EL JSON-GRAPH PARA SU GUARDADO
+def create_Dict(nodes, edges):
+    graph = {}
+    for id_ in nodes:
+        graph[id_] = {}
+    for edge in edges:
+        i, d = edge.split('-')
+        graph[i][d] = 1.0
+        graph[d][i] = 1.0
+    for node in nodes:
+        for non_neighbor in nodes:
+            if non_neighbor != node and non_neighbor not in graph[node]:
+                graph[node][non_neighbor] = 0.0
+
+    return graph
+
+def create_Graph(graph_Dict) :
+    graph_Name = list(graph_Dict.keys())[0]
+    dict_Data = get_Nodes_Edges(list(graph_Dict.values())[0])
+    graph = create_Dict(dict_Data['node_list'] , dict_Data['edge_list'])
+    graph_With_Null = (pd.DataFrame.from_dict(graph)).to_json()
+    new_Graph = (pd.DataFrame.from_dict(ast.literal_eval(str(graph_With_Null).replace('null' , '0.0')))).to_json()
+    return {graph_Name : new_Graph}
+
+# ======================GET THE GRAPH =====================================
+
+# OBTENER EL GRAFO SEGUN SEA LA REFERENCIA
+def get_Graph_By_Reference(reference1) :
+    with open('/home/EmilioRifasChidoPro/mysite/Graphs.json' , 'r') as file :
+        try :
+            data = json.load(file)
+        except ValueError :
+            with open('/home/EmilioRifasChidoPro/mysite/Graphs.json' , 'a') as file :
+                json.dump({} , file , indent = 1)
+                file.close()
+        file.close()
+    # SE OBTIENE EL DATAFRAME-JSON, EL DATAFRAME Y EL GRAFO
+    graph = nx.from_pandas_adjacency(pd.read_json(data.get(reference1)))
+    return graph
+
+# ======================GET SHORTEST PATH =====================================
+
+def get_Shortest_Path(reference , i , d) :
+    graph = get_Graph_By_Reference(reference)
+    # LISTA DEL CAMINO MAS CORTO ENTRE DOS PUNTOS
+    shortes_Path = list(nx.all_shortest_paths(graph , source = i , target =  d , weight = 'weight'))[0]
+    return ({'shortestPath' : shortes_Path})
+

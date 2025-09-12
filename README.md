@@ -20,3 +20,5 @@ https://www.pythonanywhere.com/user/EmilioRifasChidoPro/shares/c05f512a2fd645fb8
 
 Vectores
 https://www.pythonanywhere.com/user/EmilioRifasChidoPro/shares/6657b7a599f149acb3ea3f85a511f95e/
+
+De igual forma, los archivos de cada uno de estos links estan en la carpeta de GABOW dentro de este repositorio

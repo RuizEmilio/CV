@@ -19,4 +19,14 @@ Conjunto con Arturo F.Mendez Sanchez, Carlos P. Ortiz Lara, Edith Cortez Martín
 
 https://www.cio.mx/archivos/avances_cient%C3%ADficos_tecnologicos_25/tomo_4.pdf
 
-BUSCAR BAJO NOMBRE Emilio Ruiz
+AMBOS ESCRITOS SE ENCUENTRAN DE IGUAL MANERA EN FORMATO PDF
+
+Ayudante en la escritura del material escrito 
+Propiedades básicas de polinomios simétricos elementales y
+polinomios simétricos completos.
+Parte del proyecto BEIFI Agosto-Diciembre 2025 Polinomios de Shur y sus Aplicaciones
+
+Conjunto con Luis Angel Serrano Gonzalez
+
+
+ESTE ESCRITO SOLO SE ENCUENTRA EN FORMATO PDF
